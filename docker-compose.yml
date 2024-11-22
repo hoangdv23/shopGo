@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: hoangdv  # Đặt mật khẩu cho người dùng root
+      MYSQL_DATABASE: shoping             # Tên database mặc định
+      MYSQL_USER: hoangdv                   # Tạo user mới
+      MYSQL_PASSWORD: hoangdv       # Mật khẩu cho user mới
+    volumes:
+      - mysql_data:/var/lib/mysql        # Lưu trữ dữ liệu MySQL
+    ports:
+      - "3306:3306"                      # Cổng kết nối MySQL
+    networks:
+      - mynetwork
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql                    # Hostname của MySQL service
+      PMA_USER: root                     # Tài khoản để truy cập MySQL (root)
+      PMA_PASSWORD: hoangdv         # Mật khẩu của tài khoản root
+    ports:
+      - "8080:80"                        # Cổng truy cập phpMyAdmin
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+
+volumes:
+  mysql_data:
